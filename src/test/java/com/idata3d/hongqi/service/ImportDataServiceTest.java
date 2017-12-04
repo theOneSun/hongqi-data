@@ -13,7 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HongqiDataApplication.class)
-@TestPropertySource("classpath:application.properties")
+//@TestPropertySource("classpath:application.properties")
+@TestPropertySource("classpath:application-dev.properties")
 public class ImportDataServiceTest
 {
     @Autowired

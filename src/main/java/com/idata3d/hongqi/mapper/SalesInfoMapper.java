@@ -4,9 +4,7 @@ import com.idata3d.hongqi.domain.RegionCascade;
 import com.idata3d.hongqi.domain.SalesInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
-import javax.xml.soap.SAAJMetaFactory;
 import java.time.YearMonth;
 import java.util.List;
 

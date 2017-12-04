@@ -14,7 +14,8 @@ import javax.annotation.Resource;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HongqiDataApplication.class)
-@TestPropertySource("classpath:application.properties")
+//@TestPropertySource("classpath:application.properties")
+@TestPropertySource("classpath:application-dev.properties")
 public class SalesCalculateTest
 {
     @Resource
