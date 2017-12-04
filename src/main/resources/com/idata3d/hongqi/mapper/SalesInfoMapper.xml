@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.SalesInfoMapper">
+    <insert id="batchInsert">
+        INSERT INTO sales_info VALUES
+        <foreach collection="insertList" open="(" close=")" separator="),(" item="salesInfo">
+            #{salesInfo.id},#{salesInfo.carSeriesCode},#{salesInfo.carSeriesName},
+            #{salesInfo.carBaseTypeCode},#{salesInfo.carType},#{salesInfo.yearMonth},
+            #{salesInfo.region},#{salesInfo.primaryArea},#{salesInfo.secondaryArea},
+            #{salesInfo.sales},#{salesInfo.carBaseTypeName}
+        </foreach>
+    </insert>
+    <!--插入统计表-->
+    <insert id="batchInsertStatistics">
+        INSERT INTO sales_info_accumulated_statistics VALUES
+        <foreach collection="insertList" open="(" close=")" separator="),(" item="salesInfo">
+            #{salesInfo.id},#{salesInfo.carSeriesCode},#{salesInfo.carSeriesName},
+            #{salesInfo.carBaseTypeCode},#{salesInfo.carType},#{salesInfo.yearMonth},
+            #{salesInfo.region},#{salesInfo.primaryArea},#{salesInfo.secondaryArea},
+            #{salesInfo.sales},#{salesInfo.carBaseTypeName}
+        </foreach>
+    </insert>
+    <update id="batchUpdate">
+        UPDATE sales_info
+        SET car_series_name = CASE car_series_code
+        <foreach collection="updateList" item="salesInfo" open=" " close=" " separator=" ">
+            WHEN #{salesInfo.carSeriesCode} THEN #{salesInfo.carSeriesName}
+        </foreach>
+        END
+    </update>
+    <!--删除全国的数据-->
+    <delete id="deleteWholeNationData">
+        DELETE FROM sales_info WHERE region = '全国';
+    </delete>
+
+
+    <select id="getAll" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT * FROM sales_info
+    </select>
+
+    <select id="getChinaTotalByCodeAndYearMonth" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT
+            car_series_code,
+            car_series_name,
+            car_type,
+            `year_month`,
+            car_base_type_code,
+            car_base_type_name,
+            SUM(sales) sales
+        FROM
+            sales_info
+        GROUP BY
+            car_series_code,
+            `year_month`
+        ORDER BY
+            car_series_code,
+            `year_month`;
+    </select>
+    <select id="getNoNameList" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT * FROM `sales_info` WHERE car_series_name IS NULL
+    </select>
+    <select id="getRegionCascade" resultType="com.idata3d.hongqi.domain.RegionCascade">
+        SELECT
+            region,
+            primary_area,
+            secondary_area,
+            `year_month`
+        FROM
+            sales_info
+        GROUP BY
+            region,
+            primary_area,
+            secondary_area,
+            `year_month`
+    </select>
+    <select id="getRegionTotalSales" resultType="com.idata3d.hongqi.domain.SalesInfo">
+         SELECT
+             region,
+             SUM(sales) sales
+         FROM
+             sales_info
+         WHERE
+             `year_month` BETWEEN #{beginYearMonth}
+             AND #{endYearMonth}
+         GROUP BY
+             region
+    </select>
+    <!--导出csv-->
+    <select id="exportSalesInfo" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT
+            id,
+            car_series_code,
+            car_series_name,
+            car_base_type_code,
+            car_type,
+            `year_month`,
+            region,
+            primary_area,
+            IFNULL(secondary_area, ''),
+            sales,
+            car_base_type_name
+        FROM
+            sales_info
+        ORDER BY
+            id
+        LIMIT #{start},#{end}
+    </select>
+    <!--查询全部-->
+    <select id="getTotal" resultType="java.lang.Integer">
+        SELECT count(1) FROM  sales_info
+    </select>
+    <!--查询所有新增的-->
+    <select id="getAllAdd" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT
+            id,
+            car_series_code,
+            car_series_name,
+            car_base_type_code,
+            car_base_type_name,
+            car_sales_info_type AS 'carType',
+            `year_month`,
+            region,
+            sales
+        FROM
+            sales_info_market_add
+    </select>
+
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.RegionCascadeMapper">
+
+    <insert id="batchInsert">
+        INSERT INTO region_cascade VALUES
+        <foreach collection="insertList" item="cascade" open="(" separator="),(" close=")">
+            #{cascade.id},#{cascade.region},#{cascade.primaryArea},#{cascade.secondaryArea},#{cascade.yearMonth}
+        </foreach>
+    </insert>
+</mapper>

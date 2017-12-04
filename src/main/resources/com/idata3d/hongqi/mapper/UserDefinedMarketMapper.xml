@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.UserDefinedMarketMapper">
+    <insert id="batchInsert">
+        INSERT INTO user_defined_market
+        VALUES
+        <foreach collection="insertList" open="(" close=")" separator="),(" item="userMarket">
+            #{userMarket.id},
+            #{userMarket.userId},
+            #{userMarket.marketClassified.id},
+            #{userMarket.marketClassified.name},
+            #{userMarket.marketClassified.group},
+            #{userMarket.marketClassified.brand},
+            #{userMarket.marketClassified.series},
+            #{userMarket.marketClassified.carType},
+            #{userMarket.marketClassified.carSegment},
+            #{userMarket.marketClassified.carSubSegment},
+            #{userMarket.marketClassified.carSeriesCode},
+            #{userMarket.marketClassified.luxury},
+            #{userMarket.marketClassified.energy},
+            #{userMarket.marketClassified.domesticImport},
+            #{userMarket.createTime}
+        </foreach>
+    </insert>
+
+
+    <select id="getAll" resultType="com.idata3d.hongqi.domain.UserDefinedMarket">
+        SELECT
+            id,
+            user_id,
+            market_id AS 'marketClassified.id',
+            market_name AS 'marketClassified.marketName',
+            car_series_code AS 'marketClassified.carSeriesCode',
+            `group` AS 'marketClassified.group',
+            brand AS 'marketClassified.brand',
+            series AS 'marketClassified.series',
+            car_type AS 'marketClassified.carType',
+            car_segment AS 'marketClassified.carSegment',
+            car_sub_segment AS 'marketClassified.carSubSegment',
+            energy AS 'marketClassified.energy',
+            luxury AS 'marketClassified.luxury',
+            domestic_import AS 'marketClassified.domesticImport',
+            create_time
+        FROM
+            `user_defined_market`;
+    </select>
+</mapper>

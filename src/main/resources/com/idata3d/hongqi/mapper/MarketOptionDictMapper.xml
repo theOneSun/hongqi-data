@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.MarketOptionDictMapper">
+
+
+    <insert id="batchInsert" parameterType="com.idata3d.hongqi.domain.MarketOptionDict">
+        INSERT INTO market_option_dict
+        VALUES 
+        <foreach collection="dictList" open="(" close=")" item="dict" separator="),(">
+            #{dict.id},#{dict.category},#{dict.firstOption},#{dict.secondOption},#{dict.thirdOption}
+        </foreach>
+    </insert>
+
+</mapper>

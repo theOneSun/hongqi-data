@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.PriceInfoMapper">
+    <!--批量插入-->
+    <insert id="batchInsert"></insert>
+    <!--批量更新-->
+    <update id="batchUpdate">
+        UPDATE price_info
+        SET car_series_name = CASE car_series_code
+        <foreach collection="updateList" item="priceInfo" open=" " close=" " separator=" ">
+        WHEN #{priceInfo.carSeriesCode} THEN #{priceInfo.carSeriesName}
+        </foreach>
+        END
+    </update>
+
+    <select id="getAll" resultType="com.idata3d.hongqi.domain.PriceInfo">
+        SELECT * FROM price_info
+    </select>
+    <!--查询去重的code-->
+    <select id="getCodeGroup" resultType="com.idata3d.hongqi.domain.PriceInfo">
+        SELECT car_series_code FROM price_info GROUP BY car_series_code
+    </select>
+</mapper>

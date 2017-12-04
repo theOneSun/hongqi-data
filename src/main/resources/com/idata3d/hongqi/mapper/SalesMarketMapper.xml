@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.SalesMarketMapper">
+
+
+    <select id="getGroupByResult" resultType="com.idata3d.hongqi.domain.MarketClassified">
+        SELECT
+            `group`,
+            brand,
+            series,
+            luxury,
+            energy,
+            car_type,
+            car_segment,
+            car_sub_segment,
+            domestic_import,
+            car_series_code
+        FROM
+            sales_market
+        GROUP BY
+            `group`,
+            brand,
+            series,
+            luxury,
+            energy,
+            car_type,
+            car_segment,
+            car_sub_segment,
+            car_series_code
+    </select>
+
+    <select id="getGroupByResultFromSalesMarketAdd" resultType="com.idata3d.hongqi.domain.MarketClassified">
+        SELECT
+            `group`,
+            brand,
+            series,
+            luxury,
+            energy,
+            car_type,
+            car_segment,
+            car_sub_segment,
+            domestic_import,
+            car_series_code
+        FROM
+            sales_info_market_add
+        GROUP BY
+            `group`,
+            brand,
+            series,
+            luxury,
+            energy,
+            car_type,
+            car_segment,
+            car_sub_segment,
+            car_series_code
+    </select>
+
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.idata3d.hongqi.mapper.MarketClassifiedMapper">
+
+
+    <insert id="batchInsert" parameterType="com.idata3d.hongqi.domain.MarketClassified">
+        INSERT INTO market_classified
+        VALUES
+        <foreach collection="insertSet" open="(" close=")" item="marketClassified" separator="),(">
+            #{marketClassified.id},#{marketClassified.marketName},#{marketClassified.carType},
+            #{marketClassified.carSegment},#{marketClassified.carSubSegment},#{marketClassified.carSeriesCode},
+            #{marketClassified.group},#{marketClassified.brand},#{marketClassified.series},
+            #{marketClassified.luxury},#{marketClassified.energy},#{marketClassified.domesticImport}
+        </foreach>
+    </insert>
+    <select id="getAllWithOutId" resultType="com.idata3d.hongqi.domain.MarketClassified">
+        SELECT
+            car_type,
+            car_segment,
+            car_sub_segment,
+            `group`,
+            brand,
+            series,
+            luxury,
+            energy,
+            domestic_import,
+            car_series_code
+        FROM
+            market_classified
+    </select>
+    <select id="getByMarketName" resultType="com.idata3d.hongqi.domain.MarketClassified">
+        SELECT
+            car_type,
+            car_segment,
+            car_sub_segment,
+            `group`,
+            brand,
+            series,
+            luxury,
+            energy,
+            domestic_import,
+            car_series_code
+        FROM
+            market_classified
+        WHERE
+            market_name = #{marketName}
+    </select>
+</mapper>
