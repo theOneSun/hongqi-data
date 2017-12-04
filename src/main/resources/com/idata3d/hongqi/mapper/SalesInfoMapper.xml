@@ -121,7 +121,8 @@
             `year_month`,
             region,
             primary_area,
-            secondary_area sales
+            secondary_area,
+            sales
         FROM
             sales_info_market_add
     </select>
