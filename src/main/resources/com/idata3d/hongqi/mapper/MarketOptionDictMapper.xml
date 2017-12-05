@@ -10,5 +10,8 @@
             #{dict.id},#{dict.category},#{dict.firstOption},#{dict.secondOption},#{dict.thirdOption}
         </foreach>
     </insert>
+    <delete id="deleteAll">
+        truncate TABLE market_option_dict
+    </delete>
 
 </mapper>

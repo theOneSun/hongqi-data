@@ -8,4 +8,7 @@
             #{cascade.id},#{cascade.region},#{cascade.primaryArea},#{cascade.secondaryArea},#{cascade.yearMonth}
         </foreach>
     </insert>
+    <delete id="deleteAll">
+        TRUNCATE TABLE region_cascade
+    </delete>
 </mapper>

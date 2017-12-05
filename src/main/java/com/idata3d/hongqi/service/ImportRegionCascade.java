@@ -1,15 +1,13 @@
 package com.idata3d.hongqi.service;
 
 import com.idata3d.hongqi.domain.RegionCascade;
-import com.idata3d.hongqi.domain.SalesInfo;
 import com.idata3d.hongqi.mapper.RegionCascadeMapper;
 import com.idata3d.hongqi.mapper.SalesInfoMapper;
 import com.idata3d.hongqi.util.UUIDUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.swing.plaf.synth.Region;
-import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +25,9 @@ public class ImportRegionCascade
     private RegionCascadeMapper regionCascadeMapper;
     @Resource
     private SalesInfoMapper salesInfoMapper;
+
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     public int importDataToRegionCascade()
     {
@@ -81,5 +82,10 @@ public class ImportRegionCascade
             insertTotal = regionCascadeMapper.batchInsert(insertList);
         }
         return insertTotal;
+    }
+
+    //清空表
+    public int deleteAll(){
+        return regionCascadeMapper.deleteAll();
     }
 }

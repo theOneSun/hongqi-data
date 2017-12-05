@@ -3,11 +3,10 @@ package com.idata3d.hongqi.service;
 import com.idata3d.hongqi.domain.BoxStructure;
 import com.idata3d.hongqi.domain.MarketClassified;
 import com.idata3d.hongqi.domain.MarketOptionDict;
-import com.idata3d.hongqi.domain.MarketSelect;
 import com.idata3d.hongqi.mapper.MarketClassifiedMapper;
 import com.idata3d.hongqi.mapper.MarketOptionDictMapper;
-import com.idata3d.hongqi.mapper.MarketSelectMapper;
 import com.idata3d.hongqi.util.UUIDUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author sunjian.
@@ -27,9 +25,24 @@ public class ImportMarketOptionDict
     private MarketOptionDictMapper dictMapper;
     @Autowired
     private MarketClassifiedMapper marketClassifiedMapper;
+    private final Logger logger = Logger.getLogger(this.getClass());
 
 
-    public void importData()
+    public int reImportData()
+    {
+        int deleteAll = deleteAll();
+        logger.info("清空表market_option_dict" + deleteAll + "条");
+        int insertCount = importData();
+        logger.info("新插入了" + insertCount + "条");
+        return insertCount;
+    }
+
+    private int deleteAll()
+    {
+        return dictMapper.deleteAll();
+    }
+
+    public int importData()
     {
         /*
         思路
@@ -86,6 +99,7 @@ public class ImportMarketOptionDict
         //插入
         int result = dictMapper.batchInsert(optionDictList);
         System.out.println("插入了: " + result + " 条");
+        return result;
 
     }
 

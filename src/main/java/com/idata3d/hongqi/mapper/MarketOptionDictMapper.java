@@ -13,4 +13,6 @@ import java.util.List;
 public interface MarketOptionDictMapper
 {
     int batchInsert(@Param("dictList") List<MarketOptionDict> dictList);
+
+    int deleteAll();
 }

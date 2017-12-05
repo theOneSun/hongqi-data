@@ -26,7 +26,6 @@ public class SalesInfoServiceTest
      */
     @Test
     public void updateSalesInfoAndMarket(){
-        salesInfoService.updateSalesInfo();
-        salesInfoService.updateMarketClassified();
+        salesInfoService.updateSalesInfoAndMarket();
     }
 }
