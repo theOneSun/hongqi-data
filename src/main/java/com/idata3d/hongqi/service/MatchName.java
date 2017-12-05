@@ -8,6 +8,7 @@ import com.idata3d.hongqi.mapper.PriceInfoMapper;
 import com.idata3d.hongqi.mapper.SalesInfoMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -265,4 +266,51 @@ public class MatchName
         return insertTotal;
     }
 
+    //匹配销量表缺失的carSeriesName,新方法根据id做,先根据name分组再插入,简化sql
+    public int matchLackSalesCarSeriesNameById2(){
+        int perCount = 300000;
+        /*
+        1.获得所有车系名称对应
+        2,查询所有salesInfo表
+         */
+        //查询车系表
+        List<CodeNameRelation> codeNameList = codeNameRelationMapper.getAll();
+        Map<String,String> codeNameMap = new HashMap<>();
+        //封装code和name对应的map
+        for (CodeNameRelation codeName : codeNameList)
+        {
+            codeNameMap.put(codeName.getCarSeriesCode(), codeName.getCarSeriesName());
+        }
+
+        /*
+        查询总数分批次修改
+         */
+        int nameNullTotal = salesInfoMapper.getNameNullTotal();
+        int insertTotal = 0;
+        int currentTotal;
+        int loopTimes = nameNullTotal / perCount + 1;
+        List<SalesInfo> salesInfoList;
+        for (int i = 0; i < loopTimes; i++)
+        {
+            System.out.println("第"+i+"/"+loopTimes+"次");
+            salesInfoList = salesInfoMapper.getIdCodeLackNameLimit(i * perCount, (i + 1) * perCount);
+            Map<String, List<SalesInfo>> collect = salesInfoList.stream()
+                                                                .collect(Collectors.groupingBy(SalesInfo::getCarSeriesCode));
+            Set<Map.Entry<String, List<SalesInfo>>> entrySet = collect.entrySet();
+
+            for (Map.Entry<String, List<SalesInfo>> entry : entrySet)
+            {
+                String carSeriesCode = entry.getKey();
+                List<SalesInfo> valueList = entry.getValue();
+                if (!ObjectUtils.isEmpty(valueList)){
+                    //不为空提取id
+                    List<String> idList = new ArrayList<>();
+                    valueList.forEach(salesInfo -> idList.add(salesInfo.getId()));
+                    currentTotal = salesInfoMapper.setNameByIdList(idList, codeNameMap.get(carSeriesCode));
+                    insertTotal = insertTotal + currentTotal;
+                }
+            }
+        }
+        return insertTotal;
+    }
 }

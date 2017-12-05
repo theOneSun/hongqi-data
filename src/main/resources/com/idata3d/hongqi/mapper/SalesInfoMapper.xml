@@ -41,6 +41,16 @@
             #{salesInfo.id}
         </foreach>
     </update>
+    <!--根据id集合设置车型名称-->
+    <update id="setNameByIdList">
+        UPDATE sales_info
+        SET car_series_name = #{carSeriesName}
+        where
+        id in
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
     <!--删除全国的数据-->
     <delete id="deleteWholeNationData">
         DELETE FROM sales_info WHERE region = '全国';

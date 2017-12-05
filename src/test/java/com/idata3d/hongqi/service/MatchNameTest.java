@@ -80,7 +80,7 @@ public class MatchNameTest
     public void matchLackSalesInfoCarNameById() throws Exception
     {
         long startTime = System.currentTimeMillis();
-        int i = matchName.matchLackSalesCarSeriesNameById();
+        int i = matchName.matchLackSalesCarSeriesNameById2();
         System.out.println("导入了" + i + "条");
         long endTime = System.currentTimeMillis();
         System.out.println("耗时:"+(endTime-startTime));

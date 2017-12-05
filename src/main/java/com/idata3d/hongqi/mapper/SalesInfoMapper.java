@@ -79,4 +79,13 @@ public interface SalesInfoMapper
      * @return
      */
     int getNameNullTotal();
+
+    /**
+     * 根据id集合修改车型名称
+     * @param idList
+     * @param carSeriesName
+     * @return
+     */
+    int setNameByIdList(@Param("idList") List<String> idList,@Param("carSeriesName") String carSeriesName);
+
 }
