@@ -203,4 +203,66 @@ public class MatchName
 
         return salesInfoMapper.batchUpdate(updateList);
     }
+
+    //匹配销量表全部的carSeriesName,新方法根据id做
+    public int matchAllSalesCarSeriesNameById(){
+        /*
+        1.获得所有车系名称对应
+        2,查询所有salesInfo表
+         */
+        //查询车系表
+        List<CodeNameRelation> codeNameList = codeNameRelationMapper.getAll();
+        Map<String,String> codeNameMap = new HashMap<>();
+//        List<SalesInfo> updateList = new ArrayList<>();
+        //封装code和name对应的map
+        for (CodeNameRelation codeName : codeNameList)
+        {
+            codeNameMap.put(codeName.getCarSeriesCode(), codeName.getCarSeriesName());
+        }
+        List<SalesInfo> salesInfoList = salesInfoMapper.getAllIdCode();
+        for (SalesInfo salesInfo : salesInfoList)
+        {
+            salesInfo.setCarSeriesName(codeNameMap.get(salesInfo.getCarSeriesCode()));
+        }
+        return salesInfoMapper.batchUpdateById(salesInfoList);
+    }
+
+    //匹配销量表缺失的carSeriesName,新方法根据id做
+    public int matchLackSalesCarSeriesNameById(){
+        int perCount = 1000;
+        /*
+        1.获得所有车系名称对应
+        2,查询所有salesInfo表
+         */
+        //查询车系表
+        List<CodeNameRelation> codeNameList = codeNameRelationMapper.getAll();
+        Map<String,String> codeNameMap = new HashMap<>();
+        //封装code和name对应的map
+        for (CodeNameRelation codeName : codeNameList)
+        {
+            codeNameMap.put(codeName.getCarSeriesCode(), codeName.getCarSeriesName());
+        }
+
+        /*
+        查询总数分批次修改
+         */
+        int nameNullTotal = salesInfoMapper.getNameNullTotal();
+        int insertTotal = 0;
+        int currentTotal;
+        int loopTimes = nameNullTotal / perCount + 1;
+        List<SalesInfo> salesInfoList;
+        for (int i = 0; i < loopTimes; i++)
+        {
+            System.out.println("第"+i+"/"+loopTimes+"次");
+            salesInfoList = salesInfoMapper.getIdCodeLackNameLimit(i * perCount, (i + 1) * perCount);
+            for (SalesInfo salesInfo : salesInfoList)
+            {
+                salesInfo.setCarSeriesName(codeNameMap.get(salesInfo.getCarSeriesCode()));
+            }
+            currentTotal = salesInfoMapper.batchUpdateById(salesInfoList);
+            insertTotal = insertTotal + currentTotal;
+        }
+        return insertTotal;
+    }
+
 }

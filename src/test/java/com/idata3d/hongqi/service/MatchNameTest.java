@@ -14,8 +14,8 @@ import javax.annotation.Resource;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HongqiDataApplication.class)
-//@TestPropertySource("classpath:application.properties")
-@TestPropertySource("classpath:application-dev.properties")
+@TestPropertySource("classpath:application.properties")
+//@TestPropertySource("classpath:application-dev.properties")
 public class MatchNameTest
 {
     @Resource
@@ -36,7 +36,7 @@ public class MatchNameTest
     }
 
     @Test
-    public void matchaSalesInfoNoName() throws Exception
+    public void matchSalesInfoNoName() throws Exception
     {
         long startTime = System.currentTimeMillis();
         int i = matchName.matchSalesCarSeriesNameLack();
@@ -45,11 +45,42 @@ public class MatchNameTest
         System.out.println("耗时:"+(endTime-startTime));
     }
 
+
     @Test
     public void matchPriceCarNameNew() throws Exception
     {
         long startTime = System.currentTimeMillis();
         int i = matchName.matchPriceCarNameNew();
+        System.out.println("导入了" + i + "条");
+        long endTime = System.currentTimeMillis();
+        System.out.println("耗时:"+(endTime-startTime));
+    }
+
+
+    /**
+     * 根据id修改全部的车型名称
+     * @throws Exception
+     */
+    @Test
+    public void matchAllSalesInfoCarNameById() throws Exception
+    {
+        long startTime = System.currentTimeMillis();
+        int i = matchName.matchAllSalesCarSeriesNameById();
+        System.out.println("导入了" + i + "条");
+        long endTime = System.currentTimeMillis();
+        System.out.println("耗时:"+(endTime-startTime));
+    }
+
+
+    /**
+     * 根据id补充缺失的车型名称
+     * @throws Exception
+     */
+    @Test
+    public void matchLackSalesInfoCarNameById() throws Exception
+    {
+        long startTime = System.currentTimeMillis();
+        int i = matchName.matchLackSalesCarSeriesNameById();
         System.out.println("导入了" + i + "条");
         long endTime = System.currentTimeMillis();
         System.out.println("耗时:"+(endTime-startTime));

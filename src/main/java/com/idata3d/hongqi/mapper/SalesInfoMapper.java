@@ -15,7 +15,11 @@ import java.util.List;
 public interface SalesInfoMapper
 {
     List<SalesInfo> getAll();
+    //批量更新
     int batchUpdate(@Param("updateList") List<SalesInfo> salesInfoList);
+
+    //批量更新
+    int batchUpdateById(@Param("updateList") List<SalesInfo> salesInfoList);
 
     /**
      * 统计全国数据
@@ -52,4 +56,27 @@ public interface SalesInfoMapper
 
     //查询新增的所有
     List<SalesInfo> getAllAdd();
+
+    /**
+     * 查询所有对象,只查id和code,用于更新carSeriesName
+     * @return
+     */
+    List<SalesInfo> getAllIdCode();
+    /**
+     * 查询所有缺失车型名称的对象,只查id和code,用于更新carSeriesName
+     * @return
+     */
+    List<SalesInfo> getAllIdCodeLackName();
+
+    /**
+     * 查询limit(start,end)缺失车型名称的对象,只查id和code,用于更新carSeriesName
+     * @return
+     */
+    List<SalesInfo> getIdCodeLackNameLimit(@Param("start") int start,@Param("end") int end);
+
+    /**
+     * 查询车型名称为空的总数
+     * @return
+     */
+    int getNameNullTotal();
 }

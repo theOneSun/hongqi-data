@@ -28,6 +28,19 @@
         </foreach>
         END
     </update>
+    <update id="batchUpdateById">
+        UPDATE sales_info
+        SET car_series_name = CASE id
+        <foreach collection="updateList" item="salesInfo" open=" " close=" " separator=" ">
+            WHEN #{salesInfo.id} THEN #{salesInfo.carSeriesName}
+        </foreach>
+        END
+        where
+        id in
+        <foreach collection="updateList" item="salesInfo" open="(" close=")" separator=",">
+            #{salesInfo.id}
+        </foreach>
+    </update>
     <!--删除全国的数据-->
     <delete id="deleteWholeNationData">
         DELETE FROM sales_info WHERE region = '全国';
@@ -125,6 +138,18 @@
             sales
         FROM
             sales_info_market_add
+    </select>
+    <select id="getAllIdCode" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT id,car_series_code FROM sales_info
+    </select>
+    <select id="getAllIdCodeLackName" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT id,car_series_code FROM sales_info WHERE car_series_name IS NULL
+    </select>
+    <select id="getNameNullTotal" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sales_info WHERE car_series_name IS NULL
+    </select>
+    <select id="getIdCodeLackNameLimit" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT id,car_series_code FROM sales_info WHERE car_series_name IS NULL ORDER BY id limit #{start},#{end}
     </select>
 
 </mapper>
