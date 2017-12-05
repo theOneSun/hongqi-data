@@ -293,7 +293,7 @@ public class MatchName
         for (int i = 0; i < loopTimes; i++)
         {
             System.out.println("第"+i+"/"+loopTimes+"次");
-            salesInfoList = salesInfoMapper.getIdCodeLackNameLimit(i * perCount, (i + 1) * perCount);
+            salesInfoList = salesInfoMapper.getIdCodeLackNameLimit(0, perCount);
             Map<String, List<SalesInfo>> collect = salesInfoList.stream()
                                                                 .collect(Collectors.groupingBy(SalesInfo::getCarSeriesCode));
             Set<Map.Entry<String, List<SalesInfo>>> entrySet = collect.entrySet();
