@@ -39,7 +39,8 @@ public class SalesInfoService
     /**
      * 每次导入更新新数据执行的方法
      */
-    public void updateSalesInfoAndMarket(){
+    public void updateSalesInfoAndMarket()
+    {
         this.updateSalesInfo();
         this.reImportRegionCascade();
         this.updateMarketClassified();
@@ -92,7 +93,8 @@ public class SalesInfoService
         int importTotal = salesCalculate.calculateChinaTotal();
         logger.info("插入的全国数据是" + importTotal + "条,删除的全国数据是" + deleteTotal + "条");
         //5.匹配车型名称
-        matchName.matchSalesCarSeriesName();
+        int matchNameCount = matchName.matchLackSalesCarSeriesNameById2();
+        logger.info("匹配了" + matchNameCount + "条车型名称");
     }
 
     /**
