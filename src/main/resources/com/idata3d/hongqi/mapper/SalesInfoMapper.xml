@@ -161,5 +161,25 @@
     <select id="getIdCodeLackNameLimit" resultType="com.idata3d.hongqi.domain.SalesInfo">
         SELECT id,car_series_code FROM sales_info WHERE car_series_name IS NULL ORDER BY id limit #{start},#{end}
     </select>
+    <select id="getChinaTotalByCodeAndTypeCodeAndYearMonth" resultType="com.idata3d.hongqi.domain.SalesInfo">
+        SELECT
+            car_series_code,
+            car_series_name,
+            car_type,
+            `year_month`,
+            car_base_type_code,
+            car_base_type_name,
+            SUM(sales) sales
+        FROM
+            sales_info
+        GROUP BY
+            car_series_code,
+            car_base_type_code,
+            `year_month`
+        ORDER BY
+            car_series_code,
+            car_base_type_code,
+            `year_month`;
+    </select>
 
 </mapper>

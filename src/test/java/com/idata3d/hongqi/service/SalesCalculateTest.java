@@ -27,4 +27,11 @@ public class SalesCalculateTest
         int i = salesCalculate.calculateChinaTotal();
         System.out.println("导入了" + i + "条");
     }
+
+    @Test
+    public void insertAllCountryTotal2() throws Exception
+    {
+        int i = salesCalculate.calculateChinaTotal2();
+        System.out.println("导入了" + i + "条");
+    }
 }

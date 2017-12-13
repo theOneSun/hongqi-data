@@ -25,6 +25,10 @@ public interface SalesInfoMapper
      * 统计全国数据
      */
     List<SalesInfo> getChinaTotalByCodeAndYearMonth();
+    /**
+     * 统计全国数据
+     */
+    List<SalesInfo> getChinaTotalByCodeAndTypeCodeAndYearMonth();
 
     int batchInsert(@Param("insertList") List<SalesInfo> insertList);
 
