@@ -11,6 +11,7 @@ import java.time.YearMonth;
 @Data
 public class PriceInfo
 {
+    private String id;
     private String carSeriesCode;
     private String carSeriesName;
     private String carBaseTypeCode;//模糊车型code

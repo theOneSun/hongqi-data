@@ -12,6 +12,15 @@
         </foreach>
         END
     </update>
+    <update id="setNameByIdList">
+        UPDATE price_info
+        SET car_series_name = #{carSeriesName}
+        where
+        id in
+        <foreach collection="idList" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
 
     <select id="getAll" resultType="com.idata3d.hongqi.domain.PriceInfo">
         SELECT * FROM price_info
@@ -19,5 +28,12 @@
     <!--查询去重的code-->
     <select id="getCodeGroup" resultType="com.idata3d.hongqi.domain.PriceInfo">
         SELECT car_series_code FROM price_info GROUP BY car_series_code
+    </select>
+    <!--查询没有名称的priceInfo-->
+    <select id="getIdCodeLackNameLimit" resultType="com.idata3d.hongqi.domain.PriceInfo">
+        SELECT id,car_series_code FROM price_info WHERE car_series_name IS NULL ORDER BY id limit #{start},#{end}
+    </select>
+    <select id="getLackNameTotal" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM price_info WHERE car_series_name IS NULL;
     </select>
 </mapper>

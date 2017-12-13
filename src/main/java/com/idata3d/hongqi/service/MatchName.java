@@ -313,4 +313,54 @@ public class MatchName
         }
         return insertTotal;
     }
+
+    /**
+     *
+     * 匹配价格表缺失的name
+     */
+    public int matchPriceLackName(){
+        int perCount = 300000;
+        /*
+        1.获得所有车系名称对应
+        2,查询所有salesInfo表
+         */
+        //查询车系表
+        List<CodeNameRelation> codeNameList = codeNameRelationMapper.getAll();
+        Map<String,String> codeNameMap = new HashMap<>();
+        //封装code和name对应的map
+        for (CodeNameRelation codeName : codeNameList)
+        {
+            codeNameMap.put(codeName.getCarSeriesCode(), codeName.getCarSeriesName());
+        }
+         /*
+        查询总数分批次修改
+         */
+        int nameNullTotal = priceInfoMapper.getLackNameTotal();
+        int insertTotal = 0;
+        int currentTotal;
+        int loopTimes = nameNullTotal / perCount + 1;
+        List<PriceInfo> priceInfoList;
+        for (int i = 0; i < loopTimes; i++)
+        {
+            System.out.println("第"+i+"/"+loopTimes+"次");
+            priceInfoList = priceInfoMapper.getIdCodeLackNameLimit(0, perCount);
+            Map<String, List<PriceInfo>> collect = priceInfoList.stream()
+                                                                .collect(Collectors.groupingBy(PriceInfo::getCarSeriesCode));
+            Set<Map.Entry<String, List<PriceInfo>>> entrySet = collect.entrySet();
+
+            for (Map.Entry<String, List<PriceInfo>> entry : entrySet)
+            {
+                String carSeriesCode = entry.getKey();
+                List<PriceInfo> valueList = entry.getValue();
+                if (!ObjectUtils.isEmpty(valueList)){
+                    //不为空提取id
+                    List<String> idList = new ArrayList<>();
+                    valueList.forEach(priceInfo -> idList.add(priceInfo.getId()));
+                    currentTotal = priceInfoMapper.setNameByIdList(idList, codeNameMap.get(carSeriesCode));
+                    insertTotal = insertTotal + currentTotal;
+                }
+            }
+        }
+        return insertTotal;
+    }
 }

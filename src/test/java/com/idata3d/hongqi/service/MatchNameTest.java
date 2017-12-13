@@ -1,6 +1,7 @@
 package com.idata3d.hongqi.service;
 
 import com.idata3d.hongqi.HongqiDataApplication;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -83,6 +84,21 @@ public class MatchNameTest
         int i = matchName.matchLackSalesCarSeriesNameById2();
         System.out.println("导入了" + i + "条");
         long endTime = System.currentTimeMillis();
+        System.out.println("耗时:"+(endTime-startTime));
+    }
+
+    /**
+     * 最新方法更新价格表的车型名称
+     */
+    @Test
+    public void matchPriceLackName(){
+        Logger logger = Logger.getLogger(this.getClass());
+        long startTime = System.currentTimeMillis();
+        int i = matchName.matchPriceLackName();
+        long endTime = System.currentTimeMillis();
+        System.out.println("导入了" + i + "条");
+        logger.info("导入了" + i + "条");
+        logger.info("耗时:"+(endTime-startTime));
         System.out.println("耗时:"+(endTime-startTime));
     }
 }

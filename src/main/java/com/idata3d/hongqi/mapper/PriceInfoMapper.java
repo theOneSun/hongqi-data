@@ -38,5 +38,20 @@ public interface PriceInfoMapper
      */
     List<PriceInfo> getCodeGroup();
 
-    //查询每个车系每个城市
+    /**
+     * 查询缺失车型名称的priceInfo
+     */
+    List<PriceInfo> getIdCodeLackNameLimit(@Param("start") int start,@Param("end") int end);
+
+    /**
+     * 查询没有车型name的总数
+     */
+    int getLackNameTotal();
+
+    /**
+     * 根据id集合设置车型名称
+     */
+    int setNameByIdList(@Param("idList") List<String> idList,@Param("carSeriesName") String carSeriesName);
+
+
 }
