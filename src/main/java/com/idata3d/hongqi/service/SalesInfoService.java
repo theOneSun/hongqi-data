@@ -90,7 +90,7 @@ public class SalesInfoService
         //3.删除全国的数据
         int deleteTotal = salesInfoMapper.deleteWholeNationData();
         //4.计算全国数据并插入
-        int importTotal = salesCalculate.calculateChinaTotal();
+        int importTotal = salesCalculate.calculateChinaTotal2();
         logger.info("插入的全国数据是" + importTotal + "条,删除的全国数据是" + deleteTotal + "条");
         //5.匹配车型名称
         int matchNameCount = matchName.matchLackSalesCarSeriesNameById2();
